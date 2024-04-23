@@ -1,19 +1,19 @@
 import * as React from 'react';
 import {
-  StyleSheet,
   FlatList,
-  View,
-  Text,
-  TouchableOpacity,
-  Platform,
-  SafeAreaView,
-  I18nManager,
   FlatListProps,
-  ViewStyle,
-  NativeScrollEvent,
   GestureResponderEvent,
+  I18nManager,
   LayoutChangeEvent,
   ListRenderItemInfo,
+  NativeScrollEvent,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
 import mergeExtraData from './merge-extradata';
 
@@ -237,8 +237,15 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
                 ),
               )}
           </View>
-          {primaryButton}
-          {secondaryButton}
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+            }}>
+            {primaryButton}
+            {secondaryButton}
+          </View>
         </SafeAreaView>
       </View>
     );
