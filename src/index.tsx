@@ -30,6 +30,7 @@ type Props<ItemT> = {
   renderNextButton?: () => React.ReactNode;
   renderDoneButton?: () => React.ReactNode;
   renderPrevButton?: () => React.ReactNode;
+  renderInviButton?: () => React.ReactNode;
   onSlideChange?: (a: number, b: number) => void;
   onSkip?: () => void;
   onDone?: () => void;
@@ -45,6 +46,7 @@ type Props<ItemT> = {
   showNextButton: boolean;
   showPrevButton: boolean;
   showSkipButton: boolean;
+  centerDoneButton: boolean;
   bottomButton: boolean;
 } & FlatListProps<ItemT>;
 
@@ -75,6 +77,7 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
     showPrevButton: false,
     showSkipButton: false,
     bottomButton: false,
+    centerDoneButton: false,
   };
   state = {
     width: 0,
@@ -183,6 +186,23 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
       this.props.renderDoneButton,
     );
 
+  _InvisibleButton = () => (
+    <View style={{...styles.transparentBottomButton}}>
+      <Text style={{...styles.buttonText, color: 'rgba(0,0,0,0)'}}>Inv</Text>
+    </View>
+  );
+
+  _renderInvisibleButton = () =>
+    !this.props.centerDoneButton &&
+    this._renderButton(
+      'Invisible',
+      'Invisible',
+      () => {},
+      this.props.renderInviButton
+        ? this.props.renderInviButton
+        : this._InvisibleButton,
+    );
+
   _renderSkipButton = () =>
     // scrollToEnd does not work in RTL so use goToSlide instead
     this.props.showSkipButton &&
@@ -200,7 +220,11 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
     const isLastSlide = this.state.activeIndex === this.props.data.length - 1;
     const isFirstSlide = this.state.activeIndex === 0;
 
+    // TODO: make an invisible button here
     const secondaryButton =
+      (isLastSlide &&
+        !this.props.centerDoneButton &&
+        this._renderInvisibleButton()) ||
       (!isFirstSlide && this._renderPrevButton()) ||
       (!isLastSlide && this._renderSkipButton());
     const primaryButton = isLastSlide
@@ -242,9 +266,10 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
               display: 'flex',
               justifyContent: 'space-around',
               flexDirection: 'row',
+              marginTop: 35,
             }}>
-            {primaryButton}
             {secondaryButton}
+            {primaryButton}
           </View>
         </SafeAreaView>
       </View>
