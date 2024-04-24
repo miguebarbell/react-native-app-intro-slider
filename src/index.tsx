@@ -77,7 +77,7 @@ export default class AppIntroSlider<ItemT = any> extends React.Component<
     showPrevButton: false,
     showSkipButton: false,
     bottomButton: false,
-    centerDoneButton: false,
+    centerDoneButton: true,
   };
   state = {
     width: 0,
